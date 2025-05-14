@@ -7,6 +7,17 @@
 </head>
 <body>
     <h1>Debate Topics</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
     <ul>
         {% for topic in topics %}
         <li><a href="{{ url_for('view_topic', topic_id=topic.id) }}">{{ topic.title }}</a></li>
