@@ -1,0 +1,22 @@
+<h1>Debate on: {{ topic.title }}</h1>
+<form method="post">
+    <label for="round_number">Round Number:</label>
+    <input type="number" id="round_number" name="round_number" required><br>
+
+    <label for="alpha_argument">Alpha's Argument:</label>
+    <textarea id="alpha_argument" name="alpha_argument" required></textarea><br>
+
+    <label for="beta_argument">Beta's Argument:</label>
+    <textarea id="beta_argument" name="beta_argument" required></textarea><br>
+
+    <label for="moderator_notes">Moderator Notes:</label>
+    <textarea id="moderator_notes" name="moderator_notes"></textarea><br>
+
+    <label for="continue_debate">Continue Debate?</label>
+    <select id="continue_debate" name="continue_debate">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+    </select><br>
+
+    <button type="submit">Submit</button>
+</form>
