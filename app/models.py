@@ -11,7 +11,7 @@ session = Session()
 db = Base
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 class DebateTopic(db):
@@ -20,8 +20,9 @@ class DebateTopic(db):
     id = Column(Integer, primary_key=True)
     title = Column(String(200), nullable=False)
     description = Column(Text, nullable=False)
-    creation_timestamp = Column(db.DateTime, default=datetime.utcnow)
-    
+    creation_timestamp = Column(DateTime, default=datetime.utcnow)
+    status = Column(String(20), default='pending')  # New field to track pipeline stages
+
     arguments = relationship('Argument', backref='topic', lazy=True)
     logs = relationship(
         'DebateLog',
@@ -37,7 +38,7 @@ class Argument(db):
     id = Column(Integer, primary_key=True)
     topic_id = Column(Integer, ForeignKey('debate_topic.id'), nullable=False)
     content = Column(Text, nullable=False)
-    submission_timestamp = Column(db.DateTime, default=datetime.utcnow)
+    submission_timestamp = Column(DateTime, default=datetime.utcnow)
     status = Column(String(20), default='pending_review')  # 'approved', 'needs_revision', 'rejected'
     ai_feedback_to_user = Column(Text, nullable=True)
 

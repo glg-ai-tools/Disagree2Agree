@@ -1,24 +1,20 @@
 import sqlite3
 import os
 from app.argument_evaluation_agent import evaluate_argument
-from app.models import session, DebateTopic, DebateLog, DebateSummary
+from app.models import session, DebateTopic, DebateLog, DebateSummary, Base, engine  # Import Base and engine for schema creation
 from agents.scribe import Scribe
 from agents.auditor import Auditor
 
 scribe = Scribe()
 auditor = Auditor()
 
+# Update the initialize_database function to create the schema
 def initialize_database():
+    Base.metadata.create_all(engine)  # Create all tables defined in the models
     conn = sqlite3.connect('debate_forum.db')
     cursor = conn.cursor()
 
-    # Create tables if they don't exist
-    cursor.execute('''CREATE TABLE IF NOT EXISTS DebateTopic (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        title TEXT NOT NULL,
-                        description TEXT NOT NULL
-                      )''')
-
+    # Create additional tables if needed (legacy support)
     cursor.execute('''CREATE TABLE IF NOT EXISTS Argument (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         topic_id INTEGER NOT NULL,
@@ -56,6 +52,28 @@ def add_topic():
     conn.close()
 
     print("Debate topic added successfully!")
+
+def approve_topic():
+    conn = sqlite3.connect('debate_forum.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT id, title, status FROM DebateTopic WHERE status = "pending"')
+    topics = cursor.fetchall()
+
+    if not topics:
+        print("No pending topics to approve.")
+        return
+
+    print("\nPending Topics:")
+    for topic in topics:
+        print(f"- {topic[1]} (ID: {topic[0]}, Status: {topic[2]})")
+
+    topic_id = input("Enter the ID of the topic to approve: ").strip()
+    cursor.execute('UPDATE DebateTopic SET status = "approved" WHERE id = ?', (topic_id,))
+    conn.commit()
+    conn.close()
+
+    print("Topic approved successfully!")
 
 def view_arguments(topic_id):
     conn = sqlite3.connect('debate_forum.db')
@@ -138,6 +156,71 @@ def start_debate(topic_id):
     print("Debate concluded. Summary:")
     print(summary)
 
+def start_ai_debate(topic_id):
+    topic = session.query(DebateTopic).get(topic_id)
+    if not topic or topic.status != 'approved':
+        print("Topic not found or not approved for debate.")
+        return
+
+    print(f"Starting AI debate on topic: {topic.title}")
+
+    # Generate arguments for Alpha and Beta
+    alpha_arguments = [f"Alpha Argument {i+1}" for i in range(5)]  # Placeholder for AI-generated arguments
+    beta_arguments = [f"Beta Argument {i+1}" for i in range(5)]  # Placeholder for AI-generated counterarguments
+
+    round_number = 1
+    for alpha_arg, beta_arg in zip(alpha_arguments, beta_arguments):
+        print(f"Round {round_number}:")
+        print(f"Alpha: {alpha_arg}")
+        print(f"Beta: {beta_arg}")
+
+        # Record the round
+        scribe.record_round(round_number, alpha_arg, beta_arg, moderator_notes="Auto-generated round")
+
+        round_number += 1
+
+    logs = scribe.get_logs()
+    summary = auditor.summarize_debate(logs)
+
+    # Save logs and summary to the database
+    for log in logs:
+        debate_log = DebateLog(
+            topic_id=topic_id,
+            round_number=log['round_number'],
+            alpha_argument=log['alpha_argument'],
+            beta_argument=log['beta_argument'],
+            moderator_notes=log['moderator_notes']
+        )
+        session.add(debate_log)
+
+    debate_summary = DebateSummary(topic_id=topic_id, summary=summary)
+    session.add(debate_summary)
+    session.commit()
+
+    print("AI Debate concluded. Summary:")
+    print(summary)
+
+def select_topic_by_title():
+    conn = sqlite3.connect('debate_forum.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT id, title FROM DebateTopic')
+    topics = cursor.fetchall()
+
+    print("\nAvailable Topics:")
+    for topic in topics:
+        print(f"- {topic[1]} (ID: {topic[0]})")
+
+    title = input("Enter the topic title: ").strip().lower()
+    cursor.execute('SELECT id FROM DebateTopic WHERE LOWER(title) = ?', (title,))
+    result = cursor.fetchone()
+
+    if result:
+        return result[0]
+    else:
+        print("Topic not found. Please try again.")
+        return select_topic_by_title()
+
 def main():
     initialize_database()
 
@@ -149,6 +232,8 @@ def main():
         print("4. Submit an Argument")
         print("5. Start a Debate")
         print("6. Exit")
+        print("7. Approve Topics")
+        print("8. Start AI Debate")
 
         choice = input("Enter your choice: ")
 
@@ -157,17 +242,22 @@ def main():
         elif choice == '2':
             add_topic()
         elif choice == '3':
-            topic_id = int(input("Enter the topic ID: "))
+            topic_id = select_topic_by_title()
             view_arguments(topic_id)
         elif choice == '4':
-            topic_id = int(input("Enter the topic ID: "))
+            topic_id = select_topic_by_title()
             submit_argument(topic_id)
         elif choice == '5':
-            topic_id = int(input("Enter the topic ID: "))
+            topic_id = select_topic_by_title()
             start_debate(topic_id)
         elif choice == '6':
             print("Exiting Debate Forum CLI. Goodbye!")
             break
+        elif choice == '7':
+            approve_topic()
+        elif choice == '8':
+            topic_id = select_topic_by_title()
+            start_ai_debate(topic_id)
         else:
             print("Invalid choice. Please try again.")
 
