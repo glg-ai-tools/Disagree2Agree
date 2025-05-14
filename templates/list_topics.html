@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debate Topics</title>
+</head>
+<body>
+    <h1>Debate Topics</h1>
+    <ul>
+        {% for topic in topics %}
+        <li><a href="{{ url_for('view_topic', topic_id=topic.id) }}">{{ topic.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('submit_topic') }}">Submit a New Topic</a>
+</body>
+</html>

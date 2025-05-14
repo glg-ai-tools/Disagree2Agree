@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a New Topic</title>
+</head>
+<body>
+    <h1>Submit a New Debate Topic</h1>
+    <form action="{{ url_for('submit_topic') }}" method="POST">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit">Submit Topic</button>
+    </form>
+
+    <a href="{{ url_for('list_topics') }}">Back to Topics</a>
+</body>
+</html>

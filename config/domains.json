@@ -1,0 +1,19 @@
+{
+  "allowed_domains": [
+    "transportation",
+    "engineering",
+    "project",
+    "traffic",
+    "infrastructure",
+    "bridge",
+    "road",
+    "rail",
+    "python",
+    "coding",
+    "community",
+    "outreach",
+    "lunch",
+    "office",
+    "team"
+  ]
+}

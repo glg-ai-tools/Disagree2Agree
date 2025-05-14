@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ topic.title }}</title>
+</head>
+<body>
+    <h1>{{ topic.title }}</h1>
+    <p>{{ topic.description }}</p>
+
+    <h2>Arguments</h2>
+    <ul>
+        {% for argument in arguments %}
+        <li>{{ argument.content }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Submit a New Argument</h3>
+    <form action="{{ url_for('submit_argument', topic_id=topic.id) }}" method="POST">
+        <textarea name="content" rows="4" cols="50" required></textarea><br>
+        <button type="submit">Submit Argument</button>
+    </form>
+
+    <a href="{{ url_for('list_topics') }}">Back to Topics</a>
+</body>
+</html>

@@ -1,0 +1,146 @@
+{
+  "default": [
+    {
+      "name": "luminary",
+      "path": "glg.agents.luminary.the_luminary_agent",
+      "args": ["initial_topic"],
+      "kwargs": { "num_ideas": 5 }
+    },
+    {
+      "name": "anchor",
+      "path": "glg.agents.anchor.the_anchor_agent",
+      "args": ["idea"],
+      "kwargs": {}
+    },
+    {
+      "name": "navigator",
+      "path": "glg.agents.navigator.the_yellow_light_navigator_agent",
+      "args": ["idea", "anchor_assessment"],
+      "kwargs": {}
+    },
+    {
+      "name": "catalyst",
+      "path": "glg.agents.catalyst.the_catalyst_agent",
+      "args": ["idea"],
+      "kwargs": {},
+      "condition": "red_light"
+    },
+    {
+      "name": "scribe",
+      "path": "glg.agents.scribe.the_scribe_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "auditor",
+      "path": "glg.agents.auditor.the_auditor_agent",
+      "args": ["full_transcript", "executive_summary"],
+      "kwargs": {}
+    },
+    {
+      "name": "receptionist",
+      "path": "glg.agents.receptionist.the_receptionist_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "office_jester",
+      "path": "glg.agents.office_jester.the_office_jester_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "it_support",
+      "path": "glg.agents.it_support.the_it_support_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "hr_rep",
+      "path": "glg.agents.hr_rep.the_hr_rep_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "finance_lead",
+      "path": "glg.agents.finance_lead.the_finance_lead_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "legal_counsel",
+      "path": "glg.agents.legal_counsel.the_legal_counsel_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "marketing_guru",
+      "path": "glg.agents.marketing_guru.the_marketing_guru_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "office_manager",
+      "path": "glg.agents.office_manager.the_office_manager_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    }
+  ],
+  "GLG": [
+    {
+      "name": "luminary",
+      "specialty": "Creative Ideation",
+      "path": "glg.agents.luminary.the_luminary_agent",
+      "args": ["initial_topic"],
+      "kwargs": { "num_ideas": 5 }
+    },
+    {
+      "name": "anchor",
+      "specialty": "Feasibility Analysis",
+      "path": "glg.agents.anchor.the_anchor_agent",
+      "args": ["idea"],
+      "kwargs": {}
+    },
+    {
+      "name": "navigator",
+      "specialty": "Strategy & Recommendation",
+      "path": "glg.agents.navigator.the_yellow_light_navigator_agent",
+      "args": ["idea", "anchor_assessment"],
+      "kwargs": {}
+    },
+    {
+      "name": "catalyst",
+      "specialty": "Idea Revival",
+      "path": "glg.agents.catalyst.the_catalyst_agent",
+      "args": ["idea"],
+      "kwargs": {},
+      "condition": "red_light"
+    },
+    {
+      "name": "scribe",
+      "specialty": "Summary & Documentation",
+      "path": "glg.agents.scribe.the_scribe_agent",
+      "args": ["full_transcript"],
+      "kwargs": {}
+    },
+    {
+      "name": "auditor",
+      "specialty": "Quality Control",
+      "path": "glg.agents.auditor.the_auditor_agent",
+      "args": ["full_transcript", "executive_summary"],
+      "kwargs": {}
+    }
+  ],
+  "skit": {
+    "default": {
+      "image_prompt": "A small office conference room with six cartoon professionals around a green table, playful line-art, lightly humorous transportation engineering jokes in speech bubbles.",
+      "image_path": "assets/default_skit.png",
+      "audio_path": "assets/skits/default.mp3"
+    },
+    "GLG": {
+      "image_prompt": "Seinfeld-style office banter with the Green Light Go team, cartoon characters in a conference room cracking transportation jokes, comic speech bubbles and light humor.",
+      "image_path": "assets/glg_skit.png",
+      "audio_path": "assets/skits/glg.mp3"
+    }
+  }
+}
