@@ -12,3 +12,10 @@ pillow>=9.0.0
 # imageio-ffmpeg for video encoding support in moviepy
 # Use a version compatible with current Python environments
 imageio-ffmpeg>=0.6.0
+
+# Dependencies for Debate Forum application
+Flask==2.2.5
+Flask-SQLAlchemy==2.5.1
+Werkzeug==2.2.3
+SQLAlchemy==1.4.46
+Flask-Migrate==4.0.4
