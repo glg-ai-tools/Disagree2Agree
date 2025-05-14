@@ -1,0 +1,14 @@
+# Project dependencies for Green Light Go AI Go/No-Go Assistant
+openai>=0.27.0,<1.0.0
+streamlit>=1.22.0
+moviepy>=1.0.3
+python-dotenv>=1.0.0
+# Added gTTS for text-to-speech skit generation
+gTTS>=2.2.4
+
+# Optional utilities
+# pillow is required by moviepy for image handling
+pillow>=9.0.0
+# imageio-ffmpeg for video encoding support in moviepy
+# Use a version compatible with current Python environments
+imageio-ffmpeg>=0.6.0
