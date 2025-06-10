@@ -25,3 +25,9 @@ See `docs/02-Directory_Structure_Guide.md` for details.
 # - migrations/ → src/migrations/
 
 # This is a placeholder to document the planned move. Actual file moves will be performed next.
+
+---
+
+**WARNING:** Do not store secrets (such as API keys) in this repository. Use environment variables or a secrets manager, and remove any secrets from your commit history before pushing to GitHub.
+
+---
